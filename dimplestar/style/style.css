@@ -1,0 +1,204 @@
+@charset "UTF-8";
+
+* {margin:0;padding:0;}
+
+body {
+	background: #f8f8f8;
+	font: smaller Arial, Helvetica, sans-serif;
+	line-height: 2.3em;
+	color: #333333;
+}
+#wrapper {
+	background: #ffffff;
+	box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+	border-radius: 4px;
+	margin-top: 20px;
+}
+/* ========		layout		============================================================== */
+#wrapper {
+	width:960px;
+	margin:0 auto;
+	padding: 0 0 14px 0;
+	overflow:hidden;
+}
+#header {
+	float:left;
+	width:960px;
+	background: #ffffff;
+	padding: 20px 0;
+}
+img.logo {
+	position:absolute;
+	top:5px;
+	z-index:99;
+}
+/* ========		navigation   	========================================================== */
+#mainnav {
+	float:right;
+	list-style-type:none;
+	display:inline;
+	margin:68px 30px 0 0;
+	font-weight:lighter;
+	overflow:hidden;
+}
+#mainnav li {
+	display:inline;
+	padding:0 !important;
+	font-size:100%;
+}
+#mainnav li a {
+	float:left;
+	text-transform:uppercase;
+	color:#333333;
+	text-decoration:none;
+	padding:5px 12px 5px 12px !important;
+	margin: 0 0 0 2px;
+	transition: all 0.3s ease;
+}
+#mainnav li a:hover {
+	color: #ECBD2F;
+	}
+#mainnav li.current a:link {
+	color: #ECBD2F;
+	font-weight: bold;
+	}
+#mainnav li.current a:visited {
+	color: #ECBD2F;
+	font-weight: bold;
+	}
+
+/* ========		content		============================================================== */
+#content {
+	float:left;
+	background: #ffffff;
+	width:860px;
+	min-height:377px;
+	padding:10px;
+	margin:0 0 20px 50px;
+	box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+	}
+	
+/* ========		footer		============================================================== */
+#footer {
+	width:880px;
+	padding:20px 0;
+	color:#666666;
+	font-size:100%;
+	text-align:center;
+	border-top: 1px solid #eeeeee;
+	margin-top: 20px;
+}
+#footer img {
+	margin:10px 0 4px;	
+}
+/* ================================================================== */
+
+#fb{
+	float:right;
+}
+
+#gallerycontainer{
+	position:relative;
+	height:auto;
+	background: #ffffff;
+    color: #333333;
+    font: 12px/1.5em Arial,Helvetica,sans-serif,"Arial Narrow";
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+#gallerycontainer2{
+	position:relative;
+	height:500px;
+	background: #ffffff;
+    color: #333333;
+    font: 12px/1.5em Arial,Helvetica,sans-serif,"Arial Narrow";
+}
+.clearfix{
+	clear:both;
+}
+
+/* ========  sigup/login	============================================================== */
+.login{
+	overflow:hidden;
+	background:#4a90e2;
+	padding:8px;
+	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.login table{
+	float:right;
+}
+.form{
+	overflow:hidden;
+	padding:10px;
+}
+.form table{
+	margin-top:18px;
+	float:left;
+}
+#email, #pw, #cpw{
+	width:317px;
+	padding:8px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	transition: border-color 0.3s ease;
+}
+#email:focus, #pw:focus, #cpw:focus{
+	outline: none;
+	border-color: #4a90e2;
+}
+#fname, #lname{
+	width:148px;
+	padding:8px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	transition: border-color 0.3s ease;
+}
+#fname:focus, #lname:focus{
+	outline: none;
+	border-color: #4a90e2;
+}
+#submit{
+	width:140px;
+	padding:10px;
+}
+#submit{
+	background: #4a90e2;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+#submit:hover{
+	background: #357abd;
+	border-radius: 4px;
+}
+h1{
+	font:Tahoma, Geneva, sans-serif;
+	font-size:15px;
+}
+h2{
+	font:Tahoma, Geneva, sans-serif;
+	font-size:11px;
+	color:#F00;
+	padding:0px;
+	margin-top:0px;
+	margin-bottom:0px;
+}
+h3{
+	font:"Courier New", Courier, monospace;
+	font-size:14px;
+	color:#666;
+	padding:3px;
+	margin:0px;
+}
+#login_email, #login_password{
+	width:150px;
+	padding:5px;
+	font:Tahoma, Geneva, sans-serif;
+	font-size:11px;
+}
+
+/* ========  date&time	============================================================== */
+#right{
+	float:right;
+}

@@ -12,15 +12,17 @@ if (!$con) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-// Create database if it doesn't exist
-$db_selected = mysqli_select_db($con, "users_db");
-if (!$db_selected) {
+// Check if database exists, create if it doesn't
+$db_check = mysqli_query($con, "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'users_db'");
+if (mysqli_num_rows($db_check) == 0) {
     $sql = "CREATE DATABASE users_db";
     if (mysqli_query($con, $sql)) {
         mysqli_select_db($con, "users_db");
     } else {
         die("Error creating database: " . mysqli_error($con));
     }
+} else {
+    mysqli_select_db($con, "users_db");
 }
 
 // Create table if it doesn't exist

@@ -8,7 +8,7 @@
 <body>
     <h1>Welcome to Dimple Star Transport</h1>
     <p>This is the landing page.</p>
-    <?php>echo "<a href='logout.php' class='auth-button'>Logout</a>"; ?>
+    <?php echo "<a href='logout.php' class='auth-button'>Logout</a>"; ?>
 
 </body>
 </html>

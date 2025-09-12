@@ -16,34 +16,50 @@ if(isset($_SESSION['email'])) {
 }
 
 // Handle content updates
-if($is_admin && $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['section']) && isset($_POST['content'])) {
+if($is_admin && $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['section'])) {
     $section = mysqli_real_escape_string($con, $_POST['section']);
     $new_content = mysqli_real_escape_string($con, $_POST['content']);
+    $new_title = mysqli_real_escape_string($con, $_POST['title']);
     
-    // Get old content from the page (you might want to store this in a database)
+    // Get old content and titles
     $old_content = "";
-    if($section == "mission") $old_content = "To provide superior transport service to Metro Manila and Mindoro Province commuters.";
-    if($section == "vision") $old_content = "To lead the bus transport industry through its innovation service to the riding public.";
-    if($section == "history") $old_content = "Photo taken on October 16, 1993. Napat Transit (now Dimple Star Transport) NVR-963 (fleet No 800) going to Alabang and jeepneys under the Light Rail Line in Taft Ave near United Nations Avenue, Ermita, Manila, Philippines. Year 2004 of May changes has been made, Napat Transit became Dimple Star Transport.";
+    $old_title = "";
+    if($section == "mission") {
+        $old_content = "To provide superior transport service to Metro Manila and Mindoro Province commuters.";
+        $old_title = "Mission";
+    }
+    if($section == "vision") {
+        $old_content = "To lead the bus transport industry through its innovation service to the riding public.";
+        $old_title = "Vision";
+    }
+    if($section == "history") {
+        $old_content = "Photo taken on October 16, 1993. Napat Transit (now Dimple Star Transport) NVR-963 (fleet No 800) going to Alabang and jeepneys under the Light Rail Line in Taft Ave near United Nations Avenue, Ermita, Manila, Philippines. Year 2004 of May changes has been made, Napat Transit became Dimple Star Transport.";
+        $old_title = "History";
+    }
     
     // Save to audit trail
-    $audit_sql = "INSERT INTO about_page_edits (admin_email, section, old_content, new_content) 
-                  VALUES ('$email', '$section', '$old_content', '$new_content')";
+    $audit_sql = "INSERT INTO about_page_edits (admin_email, section, old_content, new_content, old_title, new_title) 
+                  VALUES ('$email', '$section', '$old_content', '$new_content', '$old_title', '$new_title')";
     mysqli_query($con, $audit_sql);
     
-    // In a real implementation, you would save this to a database
-    // For now, we'll just set session variables to show the updated content
-    $_SESSION['about_'.$section] = $new_content;
+    // Save to session variables
+    $_SESSION['about_'.$section.'_content'] = $new_content;
+    $_SESSION['about_'.$section.'_title'] = $new_title;
     
     // Redirect to avoid form resubmission
     header("Location: about.php");
     exit();
 }
 
-// Get content (in a real app, this would come from a database)
-$mission_content = isset($_SESSION['about_mission']) ? $_SESSION['about_mission'] : "To provide superior transport service to Metro Manila and Mindoro Province commuters.";
-$vision_content = isset($_SESSION['about_vision']) ? $_SESSION['about_vision'] : "To lead the bus transport industry through its innovation service to the riding public.";
-$history_content = isset($_SESSION['about_history']) ? $_SESSION['about_history'] : "Photo taken on October 16, 1993. Napat Transit (now Dimple Star Transport) NVR-963 (fleet No 800) going to Alabang and jeepneys under the Light Rail Line in Taft Ave near United Nations Avenue, Ermita, Manila, Philippines. Year 2004 of May changes has been made, Napat Transit became Dimple Star Transport.";
+// Get content and titles (in a real app, this would come from a database)
+$mission_content = isset($_SESSION['about_mission_content']) ? $_SESSION['about_mission_content'] : "To provide superior transport service to Metro Manila and Mindoro Province commuters.";
+$mission_title = isset($_SESSION['about_mission_title']) ? $_SESSION['about_mission_title'] : "Mission";
+
+$vision_content = isset($_SESSION['about_vision_content']) ? $_SESSION['about_vision_content'] : "To lead the bus transport industry through its innovation service to the riding public.";
+$vision_title = isset($_SESSION['about_vision_title']) ? $_SESSION['about_vision_title'] : "Vision";
+
+$history_content = isset($_SESSION['about_history_content']) ? $_SESSION['about_history_content'] : "Photo taken on October 16, 1993. Napat Transit (now Dimple Star Transport) NVR-963 (fleet No 800) going to Alabang and jeepneys under the Light Rail Line in Taft Ave near United Nations Avenue, Ermita, Manila, Philippines. Year 2004 of May changes has been made, Napat Transit became Dimple Star Transport.";
+$history_title = isset($_SESSION['about_history_title']) ? $_SESSION['about_history_title'] : "History";
 
 // Get edit history
 $edit_history = array();
@@ -59,10 +75,24 @@ if($is_admin) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us - Dimple Star Transport</title>
+    <title>About Dimple Star Transport - Our Mission, Vision & History</title>
+    <meta name="description" content="Learn about Dimple Star Transport's mission to provide superior transport services, our vision for industry leadership, and our rich history since 1993.">
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="About Dimple Star Transport - Our Mission, Vision & History">
+    <meta property="og:description" content="Learn about Dimple Star Transport's mission to provide superior transport services, our vision for industry leadership, and our rich history since 1993.">
+    <meta property="og:image" content="images/oldbus.jpg">
+    <meta property="og:url" content="https://www.dimplestartransport.com/about.php">
+    <meta property="og:type" content="website">
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="About Dimple Star Transport - Our Mission, Vision & History">
+    <meta name="twitter:description" content="Learn about Dimple Star Transport's mission to provide superior transport services, our vision for industry leadership, and our rich history since 1993.">
+    <meta name="twitter:image" content="images/oldbus.jpg">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="images/icon.ico" type="image/x-icon">
     <style>
+
         :root {
             --primary: #ECBD2F;
             --primary-dark: #D4A829;
@@ -226,6 +256,23 @@ if($is_admin) {
             margin-bottom: 15px;
             font-family: inherit;
             resize: vertical;
+        }
+         /* Additional styles for title input */
+        .edit-form input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-family: inherit;
+            font-size: 16px;
+        }
+        
+        .edit-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
         }
         
         .form-actions {
@@ -624,7 +671,10 @@ if($is_admin) {
             <h3>Edit Mission</h3>
             <form method="POST">
                 <input type="hidden" name="section" value="mission">
-                <textarea name="content"><?php echo $mission_content; ?></textarea>
+                <label for="mission-title">Title:</label>
+                <input type="text" id="mission-title" name="title" value="<?php echo $mission_title; ?>">
+                <label for="mission-content">Content:</label>
+                <textarea id="mission-content" name="content"><?php echo $mission_content; ?></textarea>
                 <div class="form-actions">
                     <button type="button" class="cancel-btn" onclick="hideEditForm('mission')">Cancel</button>
                     <button type="submit" class="save-btn">Save Changes</button>
@@ -636,7 +686,10 @@ if($is_admin) {
             <h3>Edit Vision</h3>
             <form method="POST">
                 <input type="hidden" name="section" value="vision">
-                <textarea name="content"><?php echo $vision_content; ?></textarea>
+                <label for="vision-title">Title:</label>
+                <input type="text" id="vision-title" name="title" value="<?php echo $vision_title; ?>">
+                <label for="vision-content">Content:</label>
+                <textarea id="vision-content" name="content"><?php echo $vision_content; ?></textarea>
                 <div class="form-actions">
                     <button type="button" class="cancel-btn" onclick="hideEditForm('vision')">Cancel</button>
                     <button type="submit" class="save-btn">Save Changes</button>
@@ -648,7 +701,10 @@ if($is_admin) {
             <h3>Edit History</h3>
             <form method="POST">
                 <input type="hidden" name="section" value="history">
-                <textarea name="content"><?php echo $history_content; ?></textarea>
+                <label for="history-title">Title:</label>
+                <input type="text" id="history-title" name="title" value="<?php echo $history_title; ?>">
+                <label for="history-content">Content:</label>
+                <textarea id="history-content" name="content"><?php echo $history_content; ?></textarea>
                 <div class="form-actions">
                     <button type="button" class="cancel-btn" onclick="hideEditForm('history')">Cancel</button>
                     <button type="submit" class="save-btn">Save Changes</button>
@@ -657,44 +713,51 @@ if($is_admin) {
         </div>
         
         <div id="history-modal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2>Edit History</h2>
-            <span class="close" onclick="closeModal()">&times;</span>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Edit History</h2>
+                    <span class="close" onclick="closeModal()">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <?php if(count($edit_history) > 0): ?>
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Admin</th>
+                                <th>Section</th>
+                                <th>Title Changes</th>
+                                <th>Content Changes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach($edit_history as $edit): ?>
+                            <tr>
+                                <td><?php echo date('M j, Y g:i A', strtotime($edit['edit_date'])); ?></td>
+                                <td><?php echo htmlspecialchars($edit['admin_email']); ?></td>
+                                <td><?php echo ucfirst($edit['section']); ?></td>
+                                <td>
+                                    <div class="changes-content">
+                                        <p><strong>Before:</strong> <?php echo htmlspecialchars($edit['old_title']); ?></p>
+                                        <p><strong>After:</strong> <?php echo htmlspecialchars($edit['new_title']); ?></p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="changes-content">
+                                        <p><strong>Before:</strong> <?php echo htmlspecialchars($edit['old_content']); ?></p>
+                                        <p><strong>After:</strong> <?php echo htmlspecialchars($edit['new_content']); ?></p>
+                                    </div>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                    <?php else: ?>
+                    <p>No edit history found.</p>
+                    <?php endif; ?>
+                </div>
+            </div>
         </div>
-        <div class="modal-body">
-            <?php if(count($edit_history) > 0): ?>
-            <table class="history-table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Admin</th>
-                        <th>Section</th>
-                        <th>Changes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach($edit_history as $edit): ?>
-                    <tr>
-                        <td><?php echo date('M j, Y g:i A', strtotime($edit['edit_date'])); ?></td>
-                        <td><?php echo htmlspecialchars($edit['admin_email']); ?></td>
-                        <td><?php echo ucfirst($edit['section']); ?></td>
-                        <td>
-                            <div class="changes-content">
-                                <p><strong>Before:</strong> <?php echo htmlspecialchars($edit['old_content']); ?></p>
-                                <p><strong>After:</strong> <?php echo htmlspecialchars($edit['new_content']); ?></p>
-                            </div>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-            <?php else: ?>
-            <p>No edit history found.</p>
-            <?php endif; ?>
-        </div>
-    </div>
-</div>
         <?php endif; ?>
         
         <div class="page-header">
@@ -716,19 +779,19 @@ if($is_admin) {
             
             <div class="mission-vision">
                 <div class="mission-vision-card">
-                    <h3><i class="fas fa-bullseye"></i> Mission</h3>
+                    <h3><i class="fas fa-bullseye"></i> <?php echo $mission_title; ?></h3>
                     <p><?php echo $mission_content; ?></p>
                 </div>
                 
                 <div class="mission-vision-card">
-                    <h3><i class="fas fa-eye"></i> Vision</h3>
+                    <h3><i class="fas fa-eye"></i> <?php echo $vision_title; ?></h3>
                     <p><?php echo $vision_content; ?></p>
                 </div>
             </div>
         </div>
         
         <div class="history-section">
-            <h3><i class="fas fa-history"></i> History</h3>
+            <h3><i class="fas fa-history"></i> <?php echo $history_title; ?></h3>
             <p><?php echo $history_content; ?></p>
         </div>
     </main>

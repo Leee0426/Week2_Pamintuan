@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Sep 06, 2025 at 06:29 AM
+-- Host: 127.0.0.1
+-- Generation Time: Sep 12, 2025 at 08:10 AM
 -- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -33,17 +33,20 @@ CREATE TABLE `about_page_edits` (
   `section` varchar(50) NOT NULL,
   `old_content` text NOT NULL,
   `new_content` text NOT NULL,
-  `edit_date` timestamp NOT NULL DEFAULT current_timestamp()
+  `edit_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `old_title` varchar(255) DEFAULT '',
+  `new_title` varchar(255) DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `about_page_edits`
 --
 
-INSERT INTO `about_page_edits` (`id`, `admin_email`, `section`, `old_content`, `new_content`, `edit_date`) VALUES
-(1, 'ryleepamintuan@gmail.com', 'mission', 'To provide superior transport service to Metro Manila and Mindoro Province commuters.', 'To provide superior transport service to Metro Manila and Mindoro Province commuters', '2025-09-06 04:21:45'),
-(2, 'ryleepamintuan@gmail.com', 'history', 'Photo taken on October 16, 1993. Napat Transit (now Dimple Star Transport) NVR-963 (fleet No 800) going to Alabang and jeepneys under the Light Rail Line in Taft Ave near United Nations Avenue, Ermita, Manila, Philippines. Year 2004 of May changes has been made, Napat Transit became Dimple Star Transport.', 'Photo taken on October 16, 1993. Napat Transit (now Dimple Star Transport) NVR-963 (fleet No 800) going to Alabang and jeepneys under the Light Rail Line in Taft Ave near United Nations Avenue, Ermita, Manila, Philippines. Year 2004 of May changes has been made, Napat Transit became Dimple Star Transporter.', '2025-09-06 04:22:08'),
-(3, 'ryleepamintuan@gmail.com', 'history', 'Photo taken on October 16, 1993. Napat Transit (now Dimple Star Transport) NVR-963 (fleet No 800) going to Alabang and jeepneys under the Light Rail Line in Taft Ave near United Nations Avenue, Ermita, Manila, Philippines. Year 2004 of May changes has been made, Napat Transit became Dimple Star Transport.', 'Photo taken on October 16, 1993. Napat Transit (now Dimple Star Transport) NVR-963 (fleet No 800) going to Alabang and jeepneys under the Light Rail Line in Taft Ave near United Nations Avenue, Ermita, Manila, Philippines. Year 2004 of May changes has been made, Napat Transit became Dimple Star Transport.', '2025-09-06 04:25:09');
+INSERT INTO `about_page_edits` (`id`, `admin_email`, `section`, `old_content`, `new_content`, `edit_date`, `old_title`, `new_title`) VALUES
+(1, 'ryleepamintuan@gmail.com', 'mission', 'To provide superior transport service to Metro Manila and Mindoro Province commuters.', 'To provide superior transport service to Metro Manila and Mindoro Province commuters', '2025-09-06 04:21:45', '', ''),
+(2, 'ryleepamintuan@gmail.com', 'history', 'Photo taken on October 16, 1993. Napat Transit (now Dimple Star Transport) NVR-963 (fleet No 800) going to Alabang and jeepneys under the Light Rail Line in Taft Ave near United Nations Avenue, Ermita, Manila, Philippines. Year 2004 of May changes has been made, Napat Transit became Dimple Star Transport.', 'Photo taken on October 16, 1993. Napat Transit (now Dimple Star Transport) NVR-963 (fleet No 800) going to Alabang and jeepneys under the Light Rail Line in Taft Ave near United Nations Avenue, Ermita, Manila, Philippines. Year 2004 of May changes has been made, Napat Transit became Dimple Star Transporter.', '2025-09-06 04:22:08', '', ''),
+(3, 'ryleepamintuan@gmail.com', 'history', 'Photo taken on October 16, 1993. Napat Transit (now Dimple Star Transport) NVR-963 (fleet No 800) going to Alabang and jeepneys under the Light Rail Line in Taft Ave near United Nations Avenue, Ermita, Manila, Philippines. Year 2004 of May changes has been made, Napat Transit became Dimple Star Transport.', 'Photo taken on October 16, 1993. Napat Transit (now Dimple Star Transport) NVR-963 (fleet No 800) going to Alabang and jeepneys under the Light Rail Line in Taft Ave near United Nations Avenue, Ermita, Manila, Philippines. Year 2004 of May changes has been made, Napat Transit became Dimple Star Transport.', '2025-09-06 04:25:09', '', ''),
+(4, 'ryleepamintuan@gmail.com', 'mission', 'To provide superior transport service to Metro Manila and Mindoro Province commuters.', 'To provide superior transport service to Metro Manila and Mindoro Province commuters.', '2025-09-12 06:09:06', 'Mission', 'Missions');
 
 -- --------------------------------------------------------
 
@@ -96,7 +99,7 @@ ALTER TABLE `members`
 -- AUTO_INCREMENT for table `about_page_edits`
 --
 ALTER TABLE `about_page_edits`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `members`
